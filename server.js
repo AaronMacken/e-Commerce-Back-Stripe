@@ -13,7 +13,7 @@ app.post("/charge", async (req, res) => {
   let status;
   try {
     // destructure product and token information coming from req.body
-    const {productData, token} = req.body;
+    const {checkoutItems, token} = req.body;
     // create a stripe customer with token info
     const customer = await stripe.customers.create({
       email: token.email,
@@ -23,11 +23,11 @@ app.post("/charge", async (req, res) => {
     const idempotency_key = uuid();
     // create a charge
     const charge = await stripe.charges.create({
-      amount: productData.exampleReduxAmount * 100,
+      amount: checkoutItems.totalPrice * 100,
       currency: "usd",
       customer: customer.id,
       receipt_email: token.email,
-      description: `Purchased the ${productData.exampleReduxNames}`,
+      description: `Purchased: ${checkoutItems.orderString}`,
       shipping: {
         name: token.card.name,
         address: {
