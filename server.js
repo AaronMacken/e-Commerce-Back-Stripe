@@ -1,6 +1,7 @@
+require("dotenv").config();
 const app = require("express")();
 // initialize the stripe client library using the secret key
-const stripe = require("stripe")(""); // put stripe sk here
+const stripe = require("stripe")(process.env.SECRET_KEY); // put stripe sk here
 app.use(require("body-parser").json());
 // used to create a random string preventing duplicate payments
 const uuid = require('uuid/v4');
