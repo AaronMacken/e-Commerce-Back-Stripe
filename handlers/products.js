@@ -34,3 +34,14 @@ exports.getProduct = async function(req, res, next) {
         return next(err);
     }
 }
+
+exports.deleteProduct = async function(req, res, next) {
+    try {
+        let foundProductDelete = await db.Product.findById(req.params.product_id);
+        await foundProductDelete.remove();
+        return res.status(200).json(foundProductDelete);
+    }
+    catch (err) {
+        return next(err);
+    }
+}

@@ -8,6 +8,6 @@ const { getProduct, getAllProducts, createProduct, deleteProduct } = require('..
 router.route('/').get(getAllProducts).post(createProduct);
 
 // router.route('/:product_id').get(getProduct).delete(deleteProduct);
-router.route('/:product_id').get(getProduct);
+router.route('/:product_id').get(getProduct).delete(deleteProduct);
 
 module.exports = router;
