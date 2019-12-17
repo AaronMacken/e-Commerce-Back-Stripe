@@ -7,6 +7,9 @@ app.use(require("body-parser").json());
 const paymentRoutes = require('./routes/payments');
 app.use(paymentRoutes);
 
+const adminRoutes = require('./routes/admin');
+app.use('/admin', adminRoutes);
+
 const productRoutes = require('./routes/products');
 app.use('/products', productRoutes);
 

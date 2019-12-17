@@ -3,13 +3,18 @@ const mongoose = require('mongoose'),
 
 
 // admin account schema
-
 const adminSchema = new mongoose.Schema({
-    email: String,
-    password: String
+    username: {
+        type: String
+    },
+    password: {
+        type: String
+    }
 });
 
 // insert passport methods into the adminSchema
 adminSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Admin', adminSchema);
+const Admin = mongoose.model('Admin', adminSchema);
+
+module.exports = Admin;

@@ -1,6 +1,5 @@
 // getProduct, createProduct, deleteProduct 
 
-  
 const db = require("../models");
 
 exports.getAllProducts = async function(req, res, next) {
@@ -18,8 +17,6 @@ exports.createProduct = async function(req, res, next) {
             title: req.body.title,
             price: req.body.price
         })
-
-        console.log(product.title + ' saved to db!')
         return res.status(200).json(product);
     } catch(err) {
         return next(err)
