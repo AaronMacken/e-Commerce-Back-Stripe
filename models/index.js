@@ -6,7 +6,8 @@ mongoose.Promise = Promise;
 mongoose.connect('mongodb://localhost/hippieHouse', {
     keepAlive: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 });
 
 module.exports.Admin = require('./admin');
