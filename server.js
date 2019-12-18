@@ -14,7 +14,10 @@ const adminRoutes = require('./routes/admin');
 app.use('/admin', adminRoutes);
 
 const productRoutes = require('./routes/products');
-app.use('/products', adminRequired, productRoutes);
+app.use('/products', productRoutes);
+
+const productRoutesAdmin = require('./routes/productsAdmin');
+app.use('/products', adminRequired, productRoutesAdmin);
 
 const errorHandler = require('./handlers/errors');
 
