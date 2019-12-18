@@ -1,9 +1,9 @@
-const express = require('express'),
+const express = require("express"),
     router = express.Router();
+const {signup, signin} = require("../handlers/admin");
 
-const { createAdminAccount } = require('../handlers/admin');
+router.post("/signup", signup);
 
-// create admin account -- prefixed with /admin
-router.route('/').post(createAdminAccount);
+// router.post("/signin", signin)
 
 module.exports = router;
