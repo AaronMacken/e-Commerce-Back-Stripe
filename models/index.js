@@ -7,7 +7,8 @@ mongoose.connect('mongodb://localhost/hippieHouse', {
     keepAlive: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useCreateIndex: true
 });
 
 module.exports.Admin = require('./admin');

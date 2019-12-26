@@ -1,14 +1,23 @@
 require("dotenv").config();
 const app = require("express")();
 
+const { adminRequired } = require('./middleware/auth');
+
+
 app.use(require("body-parser").json());
 
 // routes
 const paymentRoutes = require('./routes/payments');
 app.use(paymentRoutes);
 
+const adminRoutes = require('./routes/admin');
+app.use('/admin', adminRoutes);
+
 const productRoutes = require('./routes/products');
 app.use('/products', productRoutes);
+
+const productRoutesAdmin = require('./routes/productsAdmin');
+app.use('/products', adminRequired, productRoutesAdmin);
 
 const errorHandler = require('./handlers/errors');
 
