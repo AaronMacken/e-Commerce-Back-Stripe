@@ -1,10 +1,8 @@
 require("dotenv").config();
 const app = require("express")();
-
 const { adminRequired } = require('./middleware/auth');
-
-
 app.use(require("body-parser").json());
+
 
 // routes
 const paymentRoutes = require('./routes/payments');
@@ -17,10 +15,12 @@ const productRoutes = require('./routes/products');
 app.use('/products', productRoutes);
 
 const productRoutesAdmin = require('./routes/productsAdmin');
-app.use('/products', adminRequired, productRoutesAdmin);
+app.use('/products', productRoutesAdmin);
 
 const errorHandler = require('./handlers/errors');
 
+// uploaded product images route
+app.use('/uploads', require("express").static('uploads'))
 
 // if none of the above routes are reached, display this error
 app.use(function (req, res, next) {
