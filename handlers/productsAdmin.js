@@ -2,8 +2,6 @@ const db = require("../models");
 const fs = require("fs");
 
 exports.createProduct = async function(req, res, next) {
-  console.log(req.body);
-  console.log(req.file);
   try {
     let product = await db.Product.create({
       title: req.body.title,
@@ -43,7 +41,7 @@ exports.deleteProduct = async function(req, res, next) {
       if (err) console.log(err);
       console.log(`${foundProductDelete.productImage} deleted`);
     });
-    
+
     return res.status(200).json(foundProductDelete);
   } catch (err) {
     return next(err);
