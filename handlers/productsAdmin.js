@@ -1,16 +1,17 @@
 const db = require("../models");
 
 exports.createProduct = async function(req, res, next) {
+  console.log(req.body)
   console.log(req.file);
   try {
     let product = await db.Product.create({
-      // add productData.title - later on to match actual front end requests
       title: req.body.title,
       price: req.body.price,
       productImage: req.file.path
     });
     return res.status(200).json(product);
   } catch (err) {
+    console.log(err);
     return next(err);
   }
 };
