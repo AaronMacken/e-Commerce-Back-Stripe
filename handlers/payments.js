@@ -1,46 +1,24 @@
 const stripe = require("stripe")(process.env.SECRET_KEY); // put stripe sk here
-
 const db = require('../models');
-
 // used to create a random string preventing duplicate payments
 const uuid = require('uuid/v4');
+const { getFinalArr } = require('./dataCombiner')
 
 exports.processPayment = async function (req, res) {
     let totalPrice = 0;
+    let sentProducts = req.body.checkoutItems.data.map(e => { // incoming data (array1)
+        return e;
+    });
+    let productIds = req.body.checkoutItems.data.map(e => { // ids from incoming data
+        return e.id;
+    });
+    let foundProducts = await db.Product.find() // actual products retrieved from ids (array2)
+        .where("_id")
+        .in(productIds)
+        .exec();
 
-    let sentProducts = req.body.checkoutItems.data.map(e => {
-      return e;
-    });
-  
-    console.log("sent products...");
-    console.log(sentProducts);
-  
-    let productIds = req.body.checkoutItems.data.map(e => {
-      return e.id;
-    });
-  
-    // actual products
-    let foundProducts = await db.Product.find()
-      .where("_id")
-      .in(productIds)
-      .exec();
-  
-    console.log("found products...");
-    console.log(foundProducts);
-  
-    let newArray = foundProducts.map((e, index) => {
-      if (foundProducts[index]._id.equals(sentProducts[index].id)) {
-        return {
-          id: foundProducts[index]._id,
-          title: foundProducts[index].title,
-          price: foundProducts[index].price,
-          qty: sentProducts[index].qty
-        };
-      }
-    });
-  
-    console.log('new array...')
-    console.log(newArray);
+    let finalArr = getFinalArr(sentProducts, foundProducts);
+    console.log(finalArr);
 
     // let error;
     // let status;
