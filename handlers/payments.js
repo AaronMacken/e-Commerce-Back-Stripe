@@ -18,53 +18,54 @@ exports.processPayment = async function (req, res) {
         .exec();
 
     let finalArr = getFinalArr(sentProducts, foundProducts);
-    console.log(finalArr);
 
-    // let error;
-    // let status;
-    // try {
-    //     // destructure product and token information coming from req.body
-    //     const { checkoutItems, token } = req.body;
-    //     // create a stripe customer with token info
-    //     const customer = await stripe.customers.create({
-    //         email: token.email,
-    //         source: token.id
-    //     })
-    //     // prevents customer from being charged twice
-    //     const idempotency_key = uuid();
+    for(let i = 0; i < finalArr.length; i++) {
+        totalPrice += (finalArr[i].price * finalArr[i].qty);
+    }
 
-    //     // calculate price
-    //     // 1. get array of item ID's / quantities
-    //     // 2. look up price for ID
-    //     // 3. multiply price by qty & push to toal price variable
-    //     // 4. repeat until finished, return price var
+    
+
+    let error;
+    let status;
+    try {
+        // destructure product and token information coming from req.body
+        const { checkoutItems, token } = req.body;
+        // create a stripe customer with token info
+        const customer = await stripe.customers.create({
+            email: token.email,
+            source: token.id
+        })
+        // prevents customer from being charged twice
+        const idempotency_key = uuid();
 
 
-    //     // create a charge
-    //     const charge = await stripe.charges.create({
-    //         amount: checkoutItems.totalPrice * 100,
-    //         currency: "usd",
-    //         customer: customer.id,
-    //         receipt_email: token.email,
-    //         description: `Purchased: ${checkoutItems.orderString}`,
-    //         shipping: {
-    //             name: token.card.name,
-    //             address: {
-    //                 line1: token.card.address_line1,
-    //                 line2: token.card.address_line2,
-    //                 city: token.card.address_city,
-    //                 country: token.card.address_country,
-    //                 postal_code: token.card.address_zip
-    //             }
-    //         }
-    //     }, {
-    //         idempotency_key
-    //     })
-    //     console.log("Charge: ", { charge })
-    //     status = "success";
-    // } catch (error) {
-    //     console.error("Error: ", error)
-    //     status = "failure";
-    // }
-    // res.json({ error, status })
+        // create a charge
+        const charge = await stripe.charges.create({
+            amount: totalPrice * 100, // takes price in cents, pass to it the dollar amount * 100
+            currency: "usd",
+            customer: customer.id,
+            receipt_email: token.email,
+            description: `Purchased: ${checkoutItems.orderString}`,
+            shipping: {
+                name: token.card.name,
+                address: {
+                    line1: token.card.address_line1,
+                    line2: token.card.address_line2,
+                    city: token.card.address_city,
+                    country: token.card.address_country,
+                    postal_code: token.card.address_zip
+                }
+            }
+        }, {
+            idempotency_key
+        })
+        console.log("Charge: ", { charge })
+        status = "success";
+        totalPrice = 0;
+    } catch (error) {
+        console.error("Error: ", error)
+        status = "failure";
+        totalPrice = 0;
+    }
+    res.json({ error, status })
 }
