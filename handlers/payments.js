@@ -9,9 +9,11 @@ exports.processPayment = async function (req, res) {
     let sentProducts = req.body.checkoutItems.data.map(e => { // incoming data (array1)
         return e;
     });
+
     let productIds = req.body.checkoutItems.data.map(e => { // ids from incoming data
         return e.id;
     });
+
     let foundProducts = await db.Product.find() // actual products retrieved from ids (array2)
         .where("_id")
         .in(productIds)
@@ -22,10 +24,6 @@ exports.processPayment = async function (req, res) {
     for (let i = 0; i < finalArr.length; i++) {
         totalPrice += (finalArr[i].price * finalArr[i].qty);
     }
-
-    console.log(sentProducts.length);
-    console.log(foundProducts.length);
-    console.log(finalArr.length);
 
     if (sentProducts.length === foundProducts.length) {
         let error;
@@ -38,6 +36,7 @@ exports.processPayment = async function (req, res) {
                 email: token.email,
                 source: token.id
             })
+            
             // prevents customer from being charged twice
             const idempotency_key = uuid();
 

@@ -1,5 +1,5 @@
 exports.getFinalArr = (arr1, arr2) => {
-    let finalArr = []
+    let finalArr = [];
     for (let i = 0; i < arr1.length; i++) {
         for (let j = 0; j < arr2.length; j++) {
             if (arr1[i].id == arr2[j]._id) {
@@ -15,5 +15,5 @@ exports.getFinalArr = (arr1, arr2) => {
     return finalArr
 }
 
-// let myFinalArr = getFinalArr(firstArr, secondArr);
+// JS Sets
 
