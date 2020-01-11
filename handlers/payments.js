@@ -19,53 +19,62 @@ exports.processPayment = async function (req, res) {
 
     let finalArr = getFinalArr(sentProducts, foundProducts);
 
-    for(let i = 0; i < finalArr.length; i++) {
+    for (let i = 0; i < finalArr.length; i++) {
         totalPrice += (finalArr[i].price * finalArr[i].qty);
     }
 
-    
+    console.log(sentProducts.length);
+    console.log(foundProducts.length);
+    console.log(finalArr.length);
 
-    let error;
-    let status;
-    try {
-        // destructure product and token information coming from req.body
-        const { checkoutItems, token } = req.body;
-        // create a stripe customer with token info
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id
-        })
-        // prevents customer from being charged twice
-        const idempotency_key = uuid();
+    if (sentProducts.length === foundProducts.length) {
+        let error;
+        let status;
+        try {
+            // destructure product and token information coming from req.body
+            const { checkoutItems, token } = req.body;
+            // create a stripe customer with token info
+            const customer = await stripe.customers.create({
+                email: token.email,
+                source: token.id
+            })
+            // prevents customer from being charged twice
+            const idempotency_key = uuid();
 
 
-        // create a charge
-        const charge = await stripe.charges.create({
-            amount: totalPrice * 100, // takes price in cents, pass to it the dollar amount * 100
-            currency: "usd",
-            customer: customer.id,
-            receipt_email: token.email,
-            description: `Purchased: ${checkoutItems.orderString}`,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: token.card.address_line1,
-                    line2: token.card.address_line2,
-                    city: token.card.address_city,
-                    country: token.card.address_country,
-                    postal_code: token.card.address_zip
+            // create a charge
+            const charge = await stripe.charges.create({
+                amount: totalPrice * 100, // takes price in cents, pass to it the dollar amount * 100
+                currency: "usd",
+                customer: customer.id,
+                receipt_email: token.email,
+                description: `Purchased: ${checkoutItems.orderString}`,
+                shipping: {
+                    name: token.card.name,
+                    address: {
+                        line1: token.card.address_line1,
+                        line2: token.card.address_line2,
+                        city: token.card.address_city,
+                        country: token.card.address_country,
+                        postal_code: token.card.address_zip
+                    }
                 }
-            }
-        }, {
-            idempotency_key
-        })
-        console.log("Charge: ", { charge })
-        status = "success";
-        totalPrice = 0;
-    } catch (error) {
-        console.error("Error: ", error)
+            }, {
+                idempotency_key
+            })
+            status = "success";
+            totalPrice = 0;
+        } catch (error) {
+            status = "failure";
+            totalPrice = 0;
+        }
+        res.json({ error, status })
+    } else {
         status = "failure";
         totalPrice = 0;
+        let err = new Error("Invoice to database conflict.")
+        res.json({ err , status})
     }
-    res.json({ error, status })
+
+
 }
