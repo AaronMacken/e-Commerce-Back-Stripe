@@ -32,4 +32,4 @@ app.use(function (req, res, next) {
 // if the route was reached but there was an issue, use this errorHandler to format the error data
 app.use(errorHandler);
 
-app.listen(3001, () => console.log("Listening on port 3001"));
+app.listen(process.env.PORT || 3001, () => console.log("Listening on port 3001"));

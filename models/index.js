@@ -3,7 +3,7 @@ mongoose.set('debug', true);
 
 mongoose.Promise = Promise;
 
-mongoose.connect('mongodb://localhost/hippieHouse', {
+mongoose.connect(process.env.DATABASEURI || 'mongodb://localhost/hippieHouse', {
     keepAlive: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
