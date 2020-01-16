@@ -10,6 +10,7 @@ exports.createProduct = async function(req, res, next) {
     });
     return res.status(200).json(product);
   } catch (err) {
+    console.log('aw shit');
     console.log(err);
     return next(err);
   }
