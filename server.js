@@ -20,7 +20,7 @@ app.use('/api/products', adminRequired, productRoutesAdmin);
 const errorHandler = require('./handlers/errors');
 
 // uploaded product images route
-app.use('/uploads', require("express").static('uploads'))
+app.use('/uploads', require("express").static('/uploads'))
 
 // if none of the above routes are reached, display this error
 app.use(function (req, res, next) {
