@@ -36,7 +36,7 @@ exports.processPayment = async function (req, res) {
                 email: token.email,
                 source: token.id
             })
-            
+
             // prevents customer from being charged twice
             const idempotency_key = uuid();
 
@@ -67,14 +67,13 @@ exports.processPayment = async function (req, res) {
             status = "failure";
             totalPrice = 0;
             console.log(error)
-            res.json({ error, status })
         }
-        
+        res.json({ error, status })
     } else {
         status = "failure";
         totalPrice = 0;
         let err = new Error("Invoice to database conflict.")
         console.log(error);
-        res.json({ err , status})
+        res.json({ err, status })
     }
 }
