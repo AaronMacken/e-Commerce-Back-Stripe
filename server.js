@@ -12,10 +12,10 @@ const adminRoutes = require('./routes/admin');
 app.use('/admin', adminRoutes);
 
 const productRoutes = require('./routes/products');
-app.use('/products', productRoutes);
+app.use('/api/products', productRoutes);
 
 const productRoutesAdmin = require('./routes/productsAdmin');
-app.use('/products', adminRequired, productRoutesAdmin);
+app.use('/api/products', adminRequired, productRoutesAdmin);
 
 const errorHandler = require('./handlers/errors');
 
