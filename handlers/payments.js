@@ -66,14 +66,15 @@ exports.processPayment = async function (req, res) {
         } catch (error) {
             status = "failure";
             totalPrice = 0;
+            console.log(error)
+            res.json({ error, status })
         }
-        res.json({ error, status })
+        
     } else {
         status = "failure";
         totalPrice = 0;
         let err = new Error("Invoice to database conflict.")
+        console.log(error);
         res.json({ err , status})
     }
-
-
 }
