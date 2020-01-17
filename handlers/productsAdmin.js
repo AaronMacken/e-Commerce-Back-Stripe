@@ -1,13 +1,9 @@
 const db = require("../models");
-<<<<<<< HEAD
 const fs = require("fs");
-=======
->>>>>>> 79587519a7a571d07b20744b6d891a8193ddb002
 
 exports.createProduct = async function(req, res, next) {
   try {
     let product = await db.Product.create({
-<<<<<<< HEAD
       title: req.body.title,
       price: req.body.price,
       productImage: req.file.path
@@ -15,13 +11,6 @@ exports.createProduct = async function(req, res, next) {
     return res.status(200).json(product);
   } catch (err) {
     console.log(err);
-=======
-      title: req.body.productData.title,
-      price: req.body.productData.price
-    });
-    return res.status(200).json(product);
-  } catch (err) {
->>>>>>> 79587519a7a571d07b20744b6d891a8193ddb002
     return next(err);
   }
 };
@@ -43,7 +32,6 @@ exports.updateProduct = async function(req, res, next) {
 
 exports.deleteProduct = async function(req, res, next) {
   try {
-<<<<<<< HEAD
     // remove item from DB
     let foundProductDelete = await db.Product.findById(req.params.product_id);
     await foundProductDelete.remove();
@@ -54,10 +42,6 @@ exports.deleteProduct = async function(req, res, next) {
       console.log(`${foundProductDelete.productImage} deleted`);
     });
 
-=======
-    let foundProductDelete = await db.Product.findById(req.params.product_id);
-    await foundProductDelete.remove();
->>>>>>> 79587519a7a571d07b20744b6d891a8193ddb002
     return res.status(200).json(foundProductDelete);
   } catch (err) {
     return next(err);

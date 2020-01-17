@@ -1,5 +1,4 @@
 const stripe = require("stripe")(process.env.SECRET_KEY); // put stripe sk here
-<<<<<<< HEAD
 const db = require('../models');
 // used to create a random string preventing duplicate payments
 const uuid = require('uuid/v4');
@@ -84,53 +83,3 @@ exports.processPayment = async function (req, res) {
         res.json({ err, status })
     }
 }
-=======
-
-// used to create a random string preventing duplicate payments
-const uuid = require('uuid/v4');
-
-
-
-exports.processPayment = async function (req, res) {
-    console.log("Request: ", req.body)
-    let error;
-    let status;
-    try {
-        // destructure product and token information coming from req.body
-        const { checkoutItems, token } = req.body;
-        // create a stripe customer with token info
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id
-        })
-        // prevents customer from being charged twice
-        const idempotency_key = uuid();
-        // create a charge
-        const charge = await stripe.charges.create({
-            amount: checkoutItems.totalPrice * 100,
-            currency: "usd",
-            customer: customer.id,
-            receipt_email: token.email,
-            description: `Purchased: ${checkoutItems.orderString}`,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: token.card.address_line1,
-                    line2: token.card.address_line2,
-                    city: token.card.address_city,
-                    country: token.card.address_country,
-                    postal_code: token.card.address_zip
-                }
-            }
-        }, {
-            idempotency_key
-        })
-        console.log("Charge: ", { charge })
-        status = "success";
-    } catch (error) {
-        console.error("Error: ", error)
-        status = "failure";
-    }
-    res.json({ error, status })
-}
->>>>>>> 79587519a7a571d07b20744b6d891a8193ddb002
