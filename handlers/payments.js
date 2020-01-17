@@ -26,9 +26,7 @@ exports.processPayment = async function (req, res) {
     }
 
     if(totalPrice < 60) {
-        (totalPrice += 12.50).toFixed(2)
-    } else {
-        totalPrice = totalPrice.toFixed(2)
+        totalPrice += 12.50
     }
 
 
@@ -51,7 +49,7 @@ exports.processPayment = async function (req, res) {
 
             // create a charge
             const charge = await stripe.charges.create({
-                amount: totalPrice * 100, // takes price in cents, pass to it the dollar amount * 100
+                amount: (totalPrice * 100).toFixed(2), // takes price in cents, pass to it the dollar amount * 100
                 currency: "usd",
                 customer: customer.id,
                 receipt_email: token.email,
