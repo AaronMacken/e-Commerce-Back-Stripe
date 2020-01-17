@@ -25,6 +25,14 @@ exports.processPayment = async function (req, res) {
         totalPrice += (finalArr[i].price * finalArr[i].qty);
     }
 
+    if(totalPrice < 60) {
+        (totalPrice += 12.50).toFixed(2)
+    } else {
+        totalPrice = totalPrice.toFixed(2)
+    }
+
+
+
     if (sentProducts.length === foundProducts.length) {
         let error;
         let status;
