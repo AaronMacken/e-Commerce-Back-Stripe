@@ -2,18 +2,17 @@ const db = require("../models");
 const fs = require("fs");
 
 exports.createProduct = async function(req, res, next) {
-  console.log(req.file);
-  // try {
-  //   let product = await db.Product.create({
-  //     title: req.body.title,
-  //     price: req.body.price,
-  //     productImage: req.file.path
-  //   });
-  //   return res.status(200).json(product);
-  // } catch (err) {
-  //   console.log(err);
-  //   return next(err);
-  // }
+  try {
+    let product = await db.Product.create({
+      title: req.body.title,
+      price: req.body.price,
+      productImage: req.file.location
+    });
+    return res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    return next(err);
+  }
 };
 
 exports.updateProduct = async function(req, res, next) {
