@@ -1,16 +1,40 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-
+const aws = require("aws-sdk");
 const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/');
-  },
-  filename: function(req, file, cb) {
-      cb(null, Date.now() + file.originalname)
-  }
+const multers3 = require("multer-s3");
+
+// const storage = multer.diskStorage({
+//   destination: function(req, file, cb) {
+//     cb(null, './uploads/');
+//   },
+//   filename: function(req, file, cb) {
+//       cb(null, Date.now() + file.originalname)
+//   }
+// });
+// const upload = multer({storage: storage});
+
+aws.config.update({
+  secretAccessKey: process.env.S3AK,
+  accessKeyId: process.env.S3KID,
+  region: "us-east-2"
 });
-const upload = multer({storage: storage});
+
+const s3 = new aws.S3();
+
+var upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: "hippie-images",
+    acl: 'public-read',
+    metadata: function(req, file, cb) {
+      cb(null, { fieldName: 'TESTING_META_DATA' });
+    },
+    key: function(req, file, cb) {
+      cb(null, Date.now().toString());
+    }
+  })
+});
 
 // CRUD functions
 const {
