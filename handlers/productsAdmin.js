@@ -29,11 +29,23 @@ exports.updateProduct = async function(req, res, next) {
   }
 };
 
+const S3 = new AWS.S3();
 exports.deleteProduct = async function(req, res, next) {
   try {
     // remove item from DB
     let foundProductDelete = await db.Product.findById(req.params.product_id);
     // await foundProductDelete.remove();
+
+    let params = {
+      Bucket: 'hippie-images',
+      Key: foundProductDelete.productImage
+    }
+
+    S3.deleteObject(params, (err, data) => {
+      if(err){
+        console.log(err)
+      }
+    })
 
     // // remove item's picture from assets
     // fs.unlink(foundProductDelete.productImage, err => {
