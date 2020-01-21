@@ -38,23 +38,23 @@ exports.deleteProduct = async function(req, res, next) {
     let foundProductDelete = await db.Product.findById(req.params.product_id);
     // await foundProductDelete.remove();
 
-    let params = {
-      Bucket: 'hippie-images',
-      Key: foundProductDelete.productImage
-    }
+    // let params = {
+    //   Bucket: 'hippie-images',
+    //   Key: foundProductDelete.productImage.split('/').slice(-1)[0]
+    // }
 
-    S3.deleteObject(params, (err, data) => {
-      if(err){
-        console.log(err)
-      }
-    })
+    // S3.deleteObject(params, (err, data) => {
+    //   if(err){
+    //     console.log(err)
+    //   }
+    // })
 
     // // remove item's picture from assets
     // fs.unlink(foundProductDelete.productImage, err => {
     //   if (err) console.log(err);
     //   console.log(`${foundProductDelete.productImage} deleted`);
     // });
-    console.log(foundProductDelete.productImage);
+    console.log(foundProductDelete.productImage.split('/').slice(-1)[0]);
     return res.status(200).json(foundProductDelete);
   } catch (err) {
     return next(err);
