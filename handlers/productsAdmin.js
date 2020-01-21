@@ -1,4 +1,5 @@
 const db = require("../models");
+const aws = require("aws-sdk");
 
 exports.createProduct = async function(req, res, next) {
   try {
@@ -31,7 +32,7 @@ exports.updateProduct = async function(req, res, next) {
 
 
 exports.deleteProduct = async function(req, res, next) {
-  const S3 = new AWS.S3();
+  const S3 = new aws.S3();
   try {
     // remove item from DB
     let foundProductDelete = await db.Product.findById(req.params.product_id);
