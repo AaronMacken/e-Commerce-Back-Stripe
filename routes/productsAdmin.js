@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const aws = require("aws-sdk");
 const multer = require("multer");
-const multers3 = require("multer-s3");
+const multerS3 = require("multer-s3");
 
 // const storage = multer.diskStorage({
 //   destination: function(req, file, cb) {
