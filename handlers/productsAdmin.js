@@ -36,7 +36,7 @@ exports.deleteProduct = async function(req, res, next) {
   try {
     // remove item from DB
     let foundProductDelete = await db.Product.findById(req.params.product_id);
-    // await foundProductDelete.remove();
+    await foundProductDelete.remove();
 
     let params = {
       Bucket: 'hippie-images',
