@@ -1,5 +1,4 @@
 const db = require("../models");
-const fs = require("fs");
 
 exports.createProduct = async function(req, res, next) {
   try {
@@ -34,14 +33,14 @@ exports.deleteProduct = async function(req, res, next) {
   try {
     // remove item from DB
     let foundProductDelete = await db.Product.findById(req.params.product_id);
-    await foundProductDelete.remove();
+    // await foundProductDelete.remove();
 
-    // remove item's picture from assets
-    fs.unlink(foundProductDelete.productImage, err => {
-      if (err) console.log(err);
-      console.log(`${foundProductDelete.productImage} deleted`);
-    });
-
+    // // remove item's picture from assets
+    // fs.unlink(foundProductDelete.productImage, err => {
+    //   if (err) console.log(err);
+    //   console.log(`${foundProductDelete.productImage} deleted`);
+    // });
+    console.log(foundProductDelete.productImage);
     return res.status(200).json(foundProductDelete);
   } catch (err) {
     return next(err);
