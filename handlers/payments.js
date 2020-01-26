@@ -26,7 +26,7 @@ exports.processPayment = async function (req, res) {
     }
 
     if(totalPrice < 60) {
-        totalPrice += 12.50
+        totalPrice += 5.50
     }
 
 
