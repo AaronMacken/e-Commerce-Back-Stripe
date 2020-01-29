@@ -14,7 +14,7 @@ exports.getProduct = async function (req, res, next) {
         let foundProduct = await db.Product.findById(req.params.product_id);
         return res.status(200).json(foundProduct);
     } catch (err) {
-        return res.status(500);
+        return next(err);
     }
 }
 
