@@ -6,6 +6,7 @@ exports.createProduct = async function(req, res, next) {
     let product = await db.Product.create({
       title: req.body.title,
       price: req.body.price,
+      description: req.body.description,
       productImage: req.file.location
     });
     return res.status(200).json(product);
