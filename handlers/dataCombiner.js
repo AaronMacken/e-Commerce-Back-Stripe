@@ -5,6 +5,7 @@ exports.getFinalArr = (arr1, arr2) => {
             if (arr1[i].id == arr2[j]._id) {
                 finalArr.push({
                     id: arr1[i].id,
+                    title: arr2[j].title,
                     qty: arr1[i].qty,
                     price: arr2[j].price
                 })
